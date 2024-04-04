@@ -17,3 +17,13 @@ img {
     margin-bottom: -6vw;
     width: 17vw;
 }
+
+a{
+    text-decoration: none;
+    color: grey;
+    font-size: 3vh;
+    transition: color 0.3s ease;
+}
+a:hover{
+    color: white;
+}
