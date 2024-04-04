@@ -1,0 +1,19 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Montserrat';
+    background-color: black;
+    color: white;
+}
+
+.construction-text {
+    font-size: 5vw;
+    text-align: center;
+}
+img {
+    margin-bottom: -6vw;
+    width: 17vw;
+}
