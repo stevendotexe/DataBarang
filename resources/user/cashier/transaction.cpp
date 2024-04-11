@@ -18,13 +18,36 @@ void create_id_transaction(){
 
 /* Current time based on system */
 void current_dateTime(){
-    time_t now = time(0);
+    time_t now = time(0);   // get current time now
     tm *ltm = localtime(&now);
 
-    string date = to_string(ltm->tm_mday) + "/" + to_string(1 + ltm->tm_mon) + "/" + to_string(1900 + ltm->tm_year);
+    /* Date Section */
+    // get local date
+    int day = ltm->tm_mday;
+    int month = ltm->tm_mon + 1;  // month start at 0
+    int year = ltm->tm_year + 1900; // year start at 1900
+
+    // convert date to string n add 0 in front when digit is one
+    string newDay = (day < 10) ? "0" + to_string(day) : to_string(day);
+    string newMonth = (month < 10) ? "0" + to_string(month) : to_string(month);
+    string newYear = to_string(year);
+    
+    string date = newDay + "/" + newMonth + "/" + newYear;
     cout << date << endl;
-    string time = to_string(ltm->tm_hour) + ":" + to_string(ltm->tm_min);
+    /* End date section */
+
+    /* Time section */
+    // get local time
+    int hour = ltm->tm_hour;
+    int minute = ltm->tm_min;
+
+    // convert time to string n add 0 in front when digit is one
+    string newHour = (hour < 10) ? "0" + to_string(hour) : to_string(hour);
+    string newMinute = (minute < 10) ? "0" + to_string(minute) : to_string(minute);
+
+    string time = newHour + ":" + newMinute;
     cout << time;
+    /* End time section */
 };
 
 /* Main Program */
