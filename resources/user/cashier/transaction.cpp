@@ -46,7 +46,7 @@ void current_dateTime(){
     string newMinute = (minute < 10) ? "0" + to_string(minute) : to_string(minute);
 
     string time = newHour + ":" + newMinute;
-    cout << time;
+    cout << time << endl;
     /* End time section */
 };
 
