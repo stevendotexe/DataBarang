@@ -2,6 +2,9 @@
     "files.associations": {
         "*.embeddedhtml": "html",
         "iostream": "cpp",
-        "string": "cpp"
-    }
+        "string": "cpp",
+        "iosfwd": "cpp",
+        "iomanip": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
