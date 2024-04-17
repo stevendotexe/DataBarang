@@ -8,9 +8,14 @@
 using namespace std;
 
 struct item {
-    string id_item;
+    string id_item, item_name, item_price;
+};
+
+struct buy {
     string item_name;
-    string item_price;
+    int price;
+    int qnt;
+    int subtotal;
 };
 
 /* Create Id Transaction */
@@ -59,6 +64,7 @@ void current_dateTime(){
     /* End time section */
 };
 
+/* Open file item.csv */
 vector<item> open_file_item(){
     ifstream file("D:\\Tugas Kuliah\\Semester 2\\RL105 - Struktur Data dan Algoritma\\DataBarang\\database\\item.csv", ios::in);
 
@@ -69,55 +75,104 @@ vector<item> open_file_item(){
     string line;
     vector<item> data;
 
-    // Baca setiap baris dalam file CSV
+    // Read every line at item.csv
     while (getline(file, line)) {
         stringstream ss(line);
         string id, name, price_str;
 
-        // Pisahkan setiap kolom dalam baris
+        // Separate each column in row
         getline(ss, id, ',');
         getline(ss, name, ',');
         getline(ss, price_str, ',');
 
-        // Buat objek Barang dan tambahkan ke vektor data
+        // Make Item object and add to data vector
         item Item = {id, name, price_str};
         data.push_back(Item);
     }
 
-    // Tutup file
+    // Close file
     file.close();
 
     return data;
 }
 
-void transaction(){
+/* Add item to buy struct */
+string transaction(vector<buy>& transactions){
     vector<item> data = open_file_item();
+    buy buy_item;
 
-    // Meminta pengguna untuk memasukkan ID barang
+    // User input id item
     string input_id;
-    cout << "ID Barang: ";
+    cout << endl << "ID Barang (Ketik 0 untuk selesai): ";
     cin >> input_id;
 
-    // Mencari barang berdasarkan ID
-    bool ditemukan = false;
+    // Stop looping if ID is 0
+    if (input_id == "0") {
+        return "0";
+    }
+
+    // Search item based on ID
+    bool found = false;
     for (const auto& Item : data) {
-        if (Item.id_item == input_id) {
-            cout << "Nama: " << Item.item_name << endl;
-            cout << "Harga: " << Item.item_price << endl;
-            ditemukan = true;
+        string id = Item.id_item, name = Item.item_name, price_str = Item.item_price;
+        int quantity, subtotal = 0;
+
+        // Convert price to int
+        stringstream strm(price_str);
+        int price;
+        strm >> price;
+
+        if (id == input_id) {
+            cout << "Nama     : " << name << endl;
+            cout << "Harga    : Rp " << price << endl;
+            cout << "Jumlah   : "; cin >> quantity;
+            subtotal = price * quantity;
+            cout << "Subtotal : Rp " << subtotal << endl;
+
+            buy_item.item_name = name;
+            buy_item.price = price;
+            buy_item.qnt = quantity;
+            buy_item.subtotal = subtotal;
+
+            transactions.push_back(buy_item);
+
+            found = true;
             break;
         }
     }
 
-    // Jika barang tidak ditemukan
-    if (!ditemukan) {
-        cout << "Barang dengan ID " << input_id << " tidak ditemukan" << endl;
+    // If item not found
+    if (!found) {
+        cout << "Barang dengan ID " << input_id << " tidak found" << endl;
+    }
+
+    return input_id;
+}
+
+/* View transaction table */
+void display_transactions(const vector<buy>& transactions) {
+    cout << "Nama Barang \t Harga(Rp) \t Jumlah \t Subtotal(Rp)" << endl;
+    cout << "=============================================================" << endl;
+    for (const auto& transaction : transactions) {
+        cout << transaction.item_name.substr(0, 12) << " \t " << transaction.price << " \t\t ";
+        cout << transaction.qnt << " \t\t " << transaction.subtotal << endl;
     }
 }
 
 /* Main Program */
 int main(){
-    cout << "********** MINIMARKET NAME **********" << endl;
-    cout << "=====================================" << endl;
-    transaction();
+    cout << "********************** MINIMARKET NAME **********************" << endl;
+    cout << "=============================================================" << endl;
+
+    vector<buy> transactions;
+    string input_id;
+
+    while ((input_id = transaction(transactions)) != "0") {
+        system("cls");
+        cout << "********************** MINIMARKET NAME **********************" << endl;
+        cout << "=============================================================" << endl;
+        display_transactions(transactions);
+    }
+
+    cout << "Transaksi selesai. Terima kasih!" << endl;
 }
