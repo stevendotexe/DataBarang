@@ -161,18 +161,15 @@ void display_transactions(const vector<buy>& transactions) {
 
 /* Main Program */
 int main(){
-    cout << "********************** MINIMARKET NAME **********************" << endl;
-    cout << "=============================================================" << endl;
-
-    vector<buy> transactions;
     string input_id;
+    vector<buy> transactions;
 
-    while ((input_id = transaction(transactions)) != "0") {
+    do {
         system("cls");
         cout << "********************** MINIMARKET NAME **********************" << endl;
         cout << "=============================================================" << endl;
         display_transactions(transactions);
-    }
+    } while ((input_id = transaction(transactions)) != "0");
 
     cout << "Transaksi selesai. Terima kasih!" << endl;
 }
