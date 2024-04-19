@@ -31,7 +31,7 @@ void create_id_transaction(){
 };
 
 /* Current time based on system */
-void current_dateTime(){
+string current_dateTime(){
     time_t now = time(0);   // get current time now
     tm *ltm = localtime(&now);
 
@@ -47,7 +47,6 @@ void current_dateTime(){
     string newYear = to_string(year);
     
     string date = newDay + "/" + newMonth + "/" + newYear;
-    cout << date << endl;
     /* End date section */
 
     /* Time section */
@@ -60,8 +59,9 @@ void current_dateTime(){
     string newMinute = (minute < 10) ? "0" + to_string(minute) : to_string(minute);
 
     string time = newHour + ":" + newMinute;
-    cout << time << endl;
     /* End time section */
+
+    return date + " " + time;
 };
 
 /* Open file item.csv */
@@ -161,12 +161,14 @@ void display_transactions(const vector<buy>& transactions) {
 
 /* Main Program */
 int main(){
-    string input_id;
+    string dateTime, input_id;
+    dateTime = current_dateTime();
     vector<buy> transactions;
 
     do {
         system("cls");
         cout << "********************** MINIMARKET NAME **********************" << endl;
+        cout << dateTime << endl;
         cout << "=============================================================" << endl;
         display_transactions(transactions);
     } while ((input_id = transaction(transactions)) != "0");
