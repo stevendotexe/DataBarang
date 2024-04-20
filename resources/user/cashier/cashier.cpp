@@ -7,8 +7,10 @@
 
 using namespace std;
 
+int total = 0, paid, change;
+
 struct item {
-    string id_item, item_name, item_price;
+    string id_item, item_name, item_price, item_stock;
 };
 
 struct buy {
@@ -78,15 +80,16 @@ vector<item> open_file_item(){
     // Read every line at item.csv
     while (getline(file, line)) {
         stringstream ss(line);
-        string id, name, price_str;
+        string id, name, price_str, stock_str;
 
         // Separate each column in row
         getline(ss, id, ',');
         getline(ss, name, ',');
         getline(ss, price_str, ',');
+        getline(ss, stock_str, ',');
 
         // Make Item object and add to data vector
-        item Item = {id, name, price_str};
+        item Item = {id, name, price_str, stock_str};
         data.push_back(Item);
     }
 
@@ -128,6 +131,7 @@ string transaction(vector<buy>& transactions){
             cout << "Jumlah   : "; cin >> quantity;
             subtotal = price * quantity;
             cout << "Subtotal : Rp " << subtotal << endl;
+            total += subtotal;
 
             buy_item.item_name = name;
             buy_item.price = price;
@@ -159,6 +163,18 @@ void display_transactions(const vector<buy>& transactions) {
     }
 }
 
+/* Print receipt to receipt.txt */
+void print_receipt(){
+    string dateTime, input_id;
+    dateTime = current_dateTime();
+    vector<buy> transactions;
+
+    cout << "                           INI MINIMARKET" << endl;
+    cout << dateTime << "                                         " << "DANISHA MARC" << endl;
+    cout << "=====================================================================" << endl;
+    display_transactions(transactions);
+}
+
 /* Main Program */
 int main(){
     string dateTime, input_id;
@@ -170,8 +186,19 @@ int main(){
         cout << "                           INI MINIMARKET" << endl;
         cout << dateTime << "                                         " << "DANISHA MARC" << endl;
         cout << "=====================================================================" << endl;
+        
         display_transactions(transactions);
+
+        cout << endl << "TOTAL : Rp " << total;
     } while ((input_id = transaction(transactions)) != "0");
 
-    cout << "Transaksi selesai. Terima kasih!" << endl;
+    do {
+        cout << endl << "BAYAR     : Rp "; cin >> paid;
+        
+        if(paid < total){
+            cout << "Maaf uang kurang!";
+        }
+    } while (paid < total);
+    change = paid - total;
+    cout << "KEMBALIAN : Rp " << change;
 }
