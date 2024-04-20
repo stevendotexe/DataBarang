@@ -151,10 +151,10 @@ string transaction(vector<buy>& transactions){
 
 /* View transaction table */
 void display_transactions(const vector<buy>& transactions) {
-    cout << "Nama Barang \t Harga(Rp) \t Jumlah \t Subtotal(Rp)" << endl;
-    cout << "=============================================================" << endl;
+    cout << "NAMA BARANG \t\t HARGA(Rp) \t JUMLAH \t SUBTOTAL(Rp)" << endl;
+    cout << "=====================================================================" << endl;
     for (const auto& transaction : transactions) {
-        cout << transaction.item_name.substr(0, 12) << " \t " << transaction.price << " \t\t ";
+        cout << transaction.item_name.substr(0, 20) << " \t " << transaction.price << " \t\t ";
         cout << transaction.qnt << " \t\t " << transaction.subtotal << endl;
     }
 }
@@ -167,9 +167,9 @@ int main(){
 
     do {
         system("cls");
-        cout << "********************** MINIMARKET NAME **********************" << endl;
-        cout << dateTime << endl;
-        cout << "=============================================================" << endl;
+        cout << "                           INI MINIMARKET" << endl;
+        cout << dateTime << "                                         " << "DANISHA MARC" << endl;
+        cout << "=====================================================================" << endl;
         display_transactions(transactions);
     } while ((input_id = transaction(transactions)) != "0");
 
