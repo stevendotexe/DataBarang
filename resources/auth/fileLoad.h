@@ -6,20 +6,17 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <tuple>
 
 using namespace std;
 
-// Function prototype
-vector<vector<string>> loadData();
-
-// Function definition to load the data
 vector<vector<string>> loadData(string filename) {
     fstream theFile; // creates an fstream object for theFile
     theFile.open(filename); //opens the file
 
     if (!theFile.is_open()) {
         cerr << "Error while opening file"; // print error message to standard error stream
-        return {}; // return an empty vector to indicate failure
+        exit(1); 
     }
 
     vector<vector<string>> accountData; // vector<vector<string>> to store accountData
@@ -44,7 +41,6 @@ vector<vector<string>> loadData(string filename) {
     return accountData; // return the loaded data
 }
 
-// function definition to print the data
 void printData(const vector<vector<string>>& data) {
     for (const auto& row : data) { // const auto (to automatically determine data type),
                                    // and ampersand '&' to reference each element in accountData 
@@ -56,4 +52,3 @@ void printData(const vector<vector<string>>& data) {
 }
 
 #endif // FILELOAD_H
-
