@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <ctime>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ struct buy {
 };
 
 /* Create Id Transaction */
-void create_id_transaction(){
+string create_id_transaction(){
     string id_transaction = "trs";    // default value
     int no_transaction = 0;         // default value
 
@@ -29,7 +30,7 @@ void create_id_transaction(){
 
     id_transaction = id_transaction + string(4 - to_string(no_transaction).length(), '0') + to_string(no_transaction); // to make trs00**
 
-    cout << id_transaction << endl;
+    return id_transaction;
 };
 
 /* Current time based on system */
@@ -164,15 +165,34 @@ void display_transactions(const vector<buy>& transactions) {
 }
 
 /* Print receipt to receipt.txt */
-void print_receipt(){
-    string dateTime, input_id;
-    dateTime = current_dateTime();
-    vector<buy> transactions;
+void print_receipt(const vector<buy>& transactions){
+    // Write file
+    // If file not found, file will created automatically
+    ofstream printReceipt;
+    printReceipt.open("receipt.txt", ios::app);
 
-    cout << "                           INI MINIMARKET" << endl;
-    cout << dateTime << "                                         " << "DANISHA MARC" << endl;
-    cout << "=====================================================================" << endl;
-    display_transactions(transactions);
+    if(!printReceipt.fail()){
+        string dateTime;
+        dateTime = current_dateTime();
+
+        printReceipt << "                           INI MINIMARKET" << endl;
+        printReceipt << dateTime << "                                         " << "DANISHA MARC" << endl;
+        printReceipt << "=====================================================================" << endl;
+        printReceipt << "NAMA BARANG \t\t HARGA(Rp) \t JUMLAH \t SUBTOTAL(Rp)" << endl;
+        printReceipt << "=====================================================================" << endl;
+        for (const auto& transaction : transactions) {
+            printReceipt << transaction.item_name.substr(0, 20) << " \t " << transaction.price << " \t\t ";
+            printReceipt << transaction.qnt << " \t\t " << transaction.subtotal << endl;
+        }
+        printReceipt << endl << "TOTAL\t\t: Rp " << total;
+        printReceipt << endl << "BAYAR\t\t: Rp " << paid;
+        printReceipt << endl << "KEMBALIAN\t: Rp " << change;
+        printReceipt.close();
+
+        cout << endl << "File telah diprint";
+    } else {
+        cout << "File tidak ditemukan";
+    }
 }
 
 /* Main Program */
@@ -201,4 +221,6 @@ int main(){
     } while (paid < total);
     change = paid - total;
     cout << "KEMBALIAN : Rp " << change;
+
+    print_receipt(transactions);
 }
