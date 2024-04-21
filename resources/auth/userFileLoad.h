@@ -1,5 +1,5 @@
-#ifndef FILELOAD_H
-#define FILELOAD_H
+#ifndef USERFILELOAD_H
+#define USERFILELOAD_H
 
 #include <iostream>
 #include <fstream>
@@ -51,4 +51,4 @@ void printData(const vector<vector<string>>& data) {
     }
 }
 
-#endif // FILELOAD_H
+#endif // USERFILELOAD_H
