@@ -24,7 +24,7 @@ tuple<bool, string, string> authenticate(vector<vector<string>> data){ // functi
     }
 }
 
-void login(){
+int main(){
     cout << "======================================================================" << endl;
     cout << "Welcome to DataBarang, please wait a moment while we load some data..." << endl;
     cout << "======================================================================" << endl;
@@ -38,6 +38,4 @@ void login(){
     string accountType = get<2>(loginResult);
 
     cout << "Selamat datang, " << accountType;
-
-    return 0;
 }
