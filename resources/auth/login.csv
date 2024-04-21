@@ -1,4 +1,5 @@
 account_id,staff_name,level_user,username,password
+0,"DB Super Admin","Superadmin",superAdminLogin,superAdminPassword
 1,"Alfiansyah Komeng","WHStaff",komenk,komenkdabest
 2,"Budi Santoso","WHStaff",budis,budis123
 3,"Citra Dewi","CHStaff",citrad,citrad456
