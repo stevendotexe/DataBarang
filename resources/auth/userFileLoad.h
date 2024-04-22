@@ -7,10 +7,11 @@
 #include <string>
 #include <vector>
 #include <tuple>
+#include <unistd.h>
 
 using namespace std;
 
-vector<vector<string>> loadData(string filename) {
+vector<vector<string>> loadData(const string& filename) {
     fstream theFile; // creates an fstream object for theFile
     theFile.open(filename); //opens the file
 
@@ -41,7 +42,7 @@ vector<vector<string>> loadData(string filename) {
     return accountData; // return the loaded data
 }
 
-void printData(const vector<vector<string>>& data) {
+void printData(vector<vector<string>>& data) {
     for (const auto& row : data) { // const auto (to automatically determine data type),
                                    // and ampersand '&' to reference each element in accountData 
         for (const auto& field : row) {

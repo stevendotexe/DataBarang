@@ -1,6 +1,4 @@
-#include "../../auth/userFileLoad.h"
-#include <unistd.h>
-#include <csignal>
+#include "searchData.h"
 using namespace std;
 
 ofstream file;
@@ -87,6 +85,37 @@ void addData(vector<vector<string>>& userData, int& linecount){
     }
 };
 
+void searchData(vector<vector<string>>& userData){
+    int selection, employeeIndex;
+    cout << "\nDataBarang SearchData\n";
+    cout << "1. Search via Account ID\n";
+    cout << "2. Search via name\n";
+    cout << "3. Search via username\n";
+    cout << "4. Display all WHStaff\n";
+    cout << "5. Display all CHStaff\n";
+    cout << "Selection: "; cin >> selection;
+    switch(selection){
+        case 1:
+            searchBy("ID", userData);
+            break;
+        case 2:
+            searchBy("staff_name", userData);
+            break;
+        case 3:
+            searchBy("username", userData);
+            break;
+        case 4:
+            searchBy("displayWHStaff", userData);
+            break;
+        case 5:
+            searchBy("displayCHStaff", userData);
+            break;
+        default:
+            cout << "Invalid input";
+            break;
+    }
+}
+
 void mainMenu(vector<vector<string>>& userData, int& linecount){
     int selection;
     cout << "\n+-------------------------------------+\n";
@@ -95,8 +124,8 @@ void mainMenu(vector<vector<string>>& userData, int& linecount){
     cout << "\nWhat would you like to do? \n";
     cout << "1.\tPrint user data\n";
     cout << "2.\tAdd user data\n";
-    cout << "3.\tRemove user data\n";
-    cout << "4.\tSearch user\n";
+    cout << "3.\tSearch user\n";
+    cout << "4.\tRemove user data\n";
     cout << "5.\tEdit user data\n";
     cout << "6.\tSave & Exit\n";
     cout << "Pilihan: "; cin >> selection;
@@ -110,7 +139,7 @@ void mainMenu(vector<vector<string>>& userData, int& linecount){
             saveData(userData, "../../../database/login.csv", false);
             break;
         case 3:
-            //TODO: ADD SEACH FEATURE
+            searchData(userData);
             break; 
         case 4: 
             //TODO: REMOVE USER DATA 
@@ -120,6 +149,9 @@ void mainMenu(vector<vector<string>>& userData, int& linecount){
             break;
         case 6:
             saveData(userData, "../../../database/login.csv", true);
+            break;
+        default:
+            cout << "Invalid selection!";
             break;
     }
 }
@@ -138,16 +170,3 @@ int main(){
     
     return 0; 
 }
-// void signalHandler(int signal){
-//     string selection;
-//     cout << "CTRL + C Pressed. Would you like to exit and save?";
-//     cin >> selection;
-//     if (selection == "N" || selection == "N"){
-//         main();
-//     } else if (file.is_open()){
-//         cout << "Saving file...";
-//         file.close();
-//         cout << "Thank you for using DataBarang.";
-//         exit(0);
-//     }
-// };
