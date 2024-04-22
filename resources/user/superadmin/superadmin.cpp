@@ -93,6 +93,7 @@ void searchData(vector<vector<string>>& userData){
     cout << "3. Search via username\n";
     cout << "4. Display all WHStaff\n";
     cout << "5. Display all CHStaff\n";
+    cout << "6. Exit";
     cout << "Selection: "; cin >> selection;
     switch(selection){
         case 1:
@@ -110,8 +111,10 @@ void searchData(vector<vector<string>>& userData){
         case 5:
             searchBy("displayCHStaff", userData);
             break;
+        case 6:
+            return;
         default:
-            cout << "Invalid input";
+            cout << "Invalid input!";
             break;
     }
 }
@@ -125,9 +128,8 @@ void mainMenu(vector<vector<string>>& userData, int& linecount){
     cout << "1.\tPrint user data\n";
     cout << "2.\tAdd user data\n";
     cout << "3.\tSearch user\n";
-    cout << "4.\tRemove user data\n";
-    cout << "5.\tEdit user data\n";
-    cout << "6.\tSave & Exit\n";
+    cout << "4.\tEdit & remove user data\n";
+    cout << "5.\tSave & Exit\n";
     cout << "Pilihan: "; cin >> selection;
 
     switch(selection){
@@ -142,12 +144,10 @@ void mainMenu(vector<vector<string>>& userData, int& linecount){
             searchData(userData);
             break; 
         case 4: 
-            //TODO: REMOVE USER DATA 
-            break; 
-        case 5: 
-            //TODO: EDIT USER DATA
+            editUser(userData);
+            saveData(userData, "../../../database/login.csv", false);
             break;
-        case 6:
+        case 5:
             saveData(userData, "../../../database/login.csv", true);
             break;
         default:
