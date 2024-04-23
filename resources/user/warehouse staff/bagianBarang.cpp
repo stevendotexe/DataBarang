@@ -1,5 +1,3 @@
-resources\user\warehouse staff\bagianBarang.cpp
-@@ -1,222 +0,0 @@
 #include <iostream>
 #include <fstream>
 #include <string>
