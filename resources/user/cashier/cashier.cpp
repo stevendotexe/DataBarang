@@ -101,7 +101,10 @@ vector<item> open_file_item(){
 }
 
 /* Add item to buy struct */
-string transaction(vector<buy>& transactions, vector<item>& data){
+string transaction(vector<buy>& transactions){
+    vector<item> data = open_file_item();
+    buy buy_item;
+
     // User input id item
     string input_id;
     cout << endl << "ID Barang (Ketik 0 untuk selesai): ";
@@ -114,8 +117,8 @@ string transaction(vector<buy>& transactions, vector<item>& data){
 
     // Search item based on ID
     bool found = false;
-    for (auto& Item : data) {
-        string id = Item.id_item, name = Item.item_name, price_str = Item.item_price, stock_str = Item.item_stock;
+    for (const auto& Item : data) {
+        string id = Item.id_item, name = Item.item_name, price_str = Item.item_price;
         int quantity, subtotal = 0;
 
         // Convert price to int
@@ -123,33 +126,20 @@ string transaction(vector<buy>& transactions, vector<item>& data){
         int price;
         strm >> price;
 
-        // Convert stock to int
-        stringstream strm2(stock_str);
-        int stock;
-        strm2 >> stock;
-
         if (id == input_id) {
             cout << "Nama     : " << name << endl;
             cout << "Harga    : Rp " << price << endl;
-            do{
-                cout << "Jumlah   : "; cin >> quantity;
-
-                if(quantity > stock){
-                    cout << "Maaf stok yang tersedia sebanyak " << stock << "!" <<endl;
-                }
-            } while(quantity > stock);
+            cout << "Jumlah   : "; cin >> quantity;
             subtotal = price * quantity;
             cout << "Subtotal : Rp " << subtotal << endl;
             total += subtotal;
 
-            buy buy_item = {name, price, quantity, subtotal};
+            buy_item.item_name = name;
+            buy_item.price = price;
+            buy_item.qnt = quantity;
+            buy_item.subtotal = subtotal;
+
             transactions.push_back(buy_item);
-            
-            Item.id_item = id;
-            Item.item_name = name;
-            Item.item_price = price_str;
-            stock -= quantity;
-            Item.item_stock = to_string(stock);
 
             found = true;
             break;
@@ -158,7 +148,7 @@ string transaction(vector<buy>& transactions, vector<item>& data){
 
     // If item not found
     if (!found) {
-        cout << "Barang dengan ID " << input_id << " tidak ditemukan" << endl;
+        cout << "Barang dengan ID " << input_id << " tidak found" << endl;
     }
 
     return input_id;
@@ -195,8 +185,8 @@ void print_receipt(const vector<buy>& transactions){
             printReceipt << transaction.qnt << " \t\t " << transaction.subtotal << endl;
         }
         printReceipt << endl << "TOTAL\t\t: Rp " << total;
-        printReceipt << endl << "TUNAI\t\t: Rp " << paid;
-        printReceipt << endl << "KEMBALI\t\t: Rp " << change;
+        printReceipt << endl << "BAYAR\t\t: Rp " << paid;
+        printReceipt << endl << "KEMBALIAN\t: Rp " << change;
         printReceipt.close();
 
         cout << endl << "File telah diprint";
@@ -205,21 +195,11 @@ void print_receipt(const vector<buy>& transactions){
     }
 }
 
-// Update stock in item.csv
-void update_stock_item(const vector<item>& data){
-    ofstream file("D:\\Tugas Kuliah\\Semester 2\\RL105 - Struktur Data dan Algoritma\\DataBarang\\database\\item.csv");
-    for (const auto& Item : data){
-        file << Item.id_item << "," << Item.item_name << "," << Item.item_price << "," << Item.item_stock << endl;
-    }
-    file.close();
-}
-
 /* Main Program */
 int main(){
     string dateTime, input_id;
     dateTime = current_dateTime();
     vector<buy> transactions;
-    vector<item> data = open_file_item();
 
     do {
         system("cls");
@@ -229,19 +209,18 @@ int main(){
         
         display_transactions(transactions);
 
-        cout << endl << "TOTAL     : Rp " << total;
-    } while ((input_id = transaction(transactions, data)) != "0");
+        cout << endl << "TOTAL : Rp " << total;
+    } while ((input_id = transaction(transactions)) != "0");
 
     do {
-        cout << endl << "TUNAI     : Rp "; cin >> paid;
+        cout << endl << "BAYAR     : Rp "; cin >> paid;
         
         if(paid < total){
             cout << "Maaf uang kurang!";
         }
     } while (paid < total);
     change = paid - total;
-    cout << "KEMBALI   : Rp " << change;
+    cout << "KEMBALIAN : Rp " << change;
 
     print_receipt(transactions);
-    update_stock_item(data);
 }
