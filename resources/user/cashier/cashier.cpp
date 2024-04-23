@@ -4,11 +4,14 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <ctime>
 
 using namespace std;
 
+int total = 0, paid, change;
+
 struct item {
-    string id_item, item_name, item_price;
+    string id_item, item_name, item_price, item_stock;
 };
 
 struct buy {
@@ -19,7 +22,7 @@ struct buy {
 };
 
 /* Create Id Transaction */
-void create_id_transaction(){
+string create_id_transaction(){
     string id_transaction = "trs";    // default value
     int no_transaction = 0;         // default value
 
@@ -27,11 +30,11 @@ void create_id_transaction(){
 
     id_transaction = id_transaction + string(4 - to_string(no_transaction).length(), '0') + to_string(no_transaction); // to make trs00**
 
-    cout << id_transaction << endl;
+    return id_transaction;
 };
 
 /* Current time based on system */
-void current_dateTime(){
+string current_dateTime(){
     time_t now = time(0);   // get current time now
     tm *ltm = localtime(&now);
 
@@ -47,7 +50,6 @@ void current_dateTime(){
     string newYear = to_string(year);
     
     string date = newDay + "/" + newMonth + "/" + newYear;
-    cout << date << endl;
     /* End date section */
 
     /* Time section */
@@ -60,8 +62,9 @@ void current_dateTime(){
     string newMinute = (minute < 10) ? "0" + to_string(minute) : to_string(minute);
 
     string time = newHour + ":" + newMinute;
-    cout << time << endl;
     /* End time section */
+
+    return date + " " + time;
 };
 
 /* Open file item.csv */
@@ -78,15 +81,16 @@ vector<item> open_file_item(){
     // Read every line at item.csv
     while (getline(file, line)) {
         stringstream ss(line);
-        string id, name, price_str;
+        string id, name, price_str, stock_str;
 
         // Separate each column in row
         getline(ss, id, ',');
         getline(ss, name, ',');
         getline(ss, price_str, ',');
+        getline(ss, stock_str, ',');
 
         // Make Item object and add to data vector
-        item Item = {id, name, price_str};
+        item Item = {id, name, price_str, stock_str};
         data.push_back(Item);
     }
 
@@ -128,6 +132,7 @@ string transaction(vector<buy>& transactions){
             cout << "Jumlah   : "; cin >> quantity;
             subtotal = price * quantity;
             cout << "Subtotal : Rp " << subtotal << endl;
+            total += subtotal;
 
             buy_item.item_name = name;
             buy_item.price = price;
@@ -151,25 +156,71 @@ string transaction(vector<buy>& transactions){
 
 /* View transaction table */
 void display_transactions(const vector<buy>& transactions) {
-    cout << "Nama Barang \t Harga(Rp) \t Jumlah \t Subtotal(Rp)" << endl;
-    cout << "=============================================================" << endl;
+    cout << "NAMA BARANG \t\t HARGA(Rp) \t JUMLAH \t SUBTOTAL(Rp)" << endl;
+    cout << "=====================================================================" << endl;
     for (const auto& transaction : transactions) {
-        cout << transaction.item_name.substr(0, 12) << " \t " << transaction.price << " \t\t ";
+        cout << transaction.item_name.substr(0, 20) << " \t " << transaction.price << " \t\t ";
         cout << transaction.qnt << " \t\t " << transaction.subtotal << endl;
+    }
+}
+
+/* Print receipt to receipt.txt */
+void print_receipt(const vector<buy>& transactions){
+    // Write file
+    // If file not found, file will created automatically
+    ofstream printReceipt;
+    printReceipt.open("receipt.txt", ios::app);
+
+    if(!printReceipt.fail()){
+        string dateTime;
+        dateTime = current_dateTime();
+
+        printReceipt << "                           INI MINIMARKET" << endl;
+        printReceipt << dateTime << "                                         " << "DANISHA MARC" << endl;
+        printReceipt << "=====================================================================" << endl;
+        printReceipt << "NAMA BARANG \t\t HARGA(Rp) \t JUMLAH \t SUBTOTAL(Rp)" << endl;
+        printReceipt << "=====================================================================" << endl;
+        for (const auto& transaction : transactions) {
+            printReceipt << transaction.item_name.substr(0, 20) << " \t " << transaction.price << " \t\t ";
+            printReceipt << transaction.qnt << " \t\t " << transaction.subtotal << endl;
+        }
+        printReceipt << endl << "TOTAL\t\t: Rp " << total;
+        printReceipt << endl << "BAYAR\t\t: Rp " << paid;
+        printReceipt << endl << "KEMBALIAN\t: Rp " << change;
+        printReceipt.close();
+
+        cout << endl << "File telah diprint";
+    } else {
+        cout << "File tidak ditemukan";
     }
 }
 
 /* Main Program */
 int main(){
-    string input_id;
+    string dateTime, input_id;
+    dateTime = current_dateTime();
     vector<buy> transactions;
 
     do {
         system("cls");
-        cout << "********************** MINIMARKET NAME **********************" << endl;
-        cout << "=============================================================" << endl;
+        cout << "                           INI MINIMARKET" << endl;
+        cout << dateTime << "                                         " << "DANISHA MARC" << endl;
+        cout << "=====================================================================" << endl;
+        
         display_transactions(transactions);
+
+        cout << endl << "TOTAL : Rp " << total;
     } while ((input_id = transaction(transactions)) != "0");
 
-    cout << "Transaksi selesai. Terima kasih!" << endl;
+    do {
+        cout << endl << "BAYAR     : Rp "; cin >> paid;
+        
+        if(paid < total){
+            cout << "Maaf uang kurang!";
+        }
+    } while (paid < total);
+    change = paid - total;
+    cout << "KEMBALIAN : Rp " << change;
+
+    print_receipt(transactions);
 }
