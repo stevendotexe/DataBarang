@@ -21,18 +21,6 @@ struct buy {
     int subtotal;
 };
 
-/* Create Id Transaction */
-string create_id_transaction(){
-    string id_transaction = "trs";    // default value
-    int no_transaction = 0;         // default value
-
-    no_transaction = no_transaction + 25; // is random number
-
-    id_transaction = id_transaction + string(4 - to_string(no_transaction).length(), '0') + to_string(no_transaction); // to make trs00**
-
-    return id_transaction;
-};
-
 /* Current time based on system */
 string current_dateTime(){
     time_t now = time(0);   // get current time now
@@ -69,7 +57,7 @@ string current_dateTime(){
 
 /* Open file item.csv */
 vector<item> open_file_item(){
-    ifstream file("D:\\Tugas Kuliah\\Semester 2\\RL105 - Struktur Data dan Algoritma\\DataBarang\\database\\item.csv", ios::in);
+    ifstream file("D:\\Tugas Kuliah\\Semester 2\\RL105 - Struktur Data dan Algoritma\\DataBarangBaru\\DataBarang\\database\\item.csv", ios::in);
 
     if (!file.is_open()) {
         cout << "Gagal membuka file CSV" << endl;
@@ -101,10 +89,7 @@ vector<item> open_file_item(){
 }
 
 /* Add item to buy struct */
-string transaction(vector<buy>& transactions){
-    vector<item> data = open_file_item();
-    buy buy_item;
-
+string transaction(vector<buy>& transactions, vector<item>& data){
     // User input id item
     string input_id;
     cout << endl << "ID Barang (Ketik 0 untuk selesai): ";
@@ -117,8 +102,8 @@ string transaction(vector<buy>& transactions){
 
     // Search item based on ID
     bool found = false;
-    for (const auto& Item : data) {
-        string id = Item.id_item, name = Item.item_name, price_str = Item.item_price;
+    for (auto& Item : data) {
+        string id = Item.id_item, name = Item.item_name, price_str = Item.item_price, stock_str = Item.item_stock;
         int quantity, subtotal = 0;
 
         // Convert price to int
@@ -126,20 +111,33 @@ string transaction(vector<buy>& transactions){
         int price;
         strm >> price;
 
+        // Convert stock to int
+        stringstream strm2(stock_str);
+        int stock;
+        strm2 >> stock;
+
         if (id == input_id) {
             cout << "Nama     : " << name << endl;
             cout << "Harga    : Rp " << price << endl;
-            cout << "Jumlah   : "; cin >> quantity;
+            do{
+                cout << "Jumlah   : "; cin >> quantity;
+
+                if(quantity > stock){
+                    cout << "Maaf stok yang tersedia sebanyak " << stock << "!" <<endl;
+                }
+            } while(quantity > stock);
             subtotal = price * quantity;
             cout << "Subtotal : Rp " << subtotal << endl;
             total += subtotal;
 
-            buy_item.item_name = name;
-            buy_item.price = price;
-            buy_item.qnt = quantity;
-            buy_item.subtotal = subtotal;
-
+            buy buy_item = {name, price, quantity, subtotal};
             transactions.push_back(buy_item);
+            
+            Item.id_item = id;
+            Item.item_name = name;
+            Item.item_price = price_str;
+            stock -= quantity;
+            Item.item_stock = to_string(stock);
 
             found = true;
             break;
@@ -148,7 +146,7 @@ string transaction(vector<buy>& transactions){
 
     // If item not found
     if (!found) {
-        cout << "Barang dengan ID " << input_id << " tidak found" << endl;
+        cout << "Barang dengan ID " << input_id << " tidak ditemukan" << endl;
     }
 
     return input_id;
@@ -185,8 +183,8 @@ void print_receipt(const vector<buy>& transactions){
             printReceipt << transaction.qnt << " \t\t " << transaction.subtotal << endl;
         }
         printReceipt << endl << "TOTAL\t\t: Rp " << total;
-        printReceipt << endl << "BAYAR\t\t: Rp " << paid;
-        printReceipt << endl << "KEMBALIAN\t: Rp " << change;
+        printReceipt << endl << "TUNAI\t\t: Rp " << paid;
+        printReceipt << endl << "KEMBALI\t\t: Rp " << change;
         printReceipt.close();
 
         cout << endl << "File telah diprint";
@@ -195,11 +193,21 @@ void print_receipt(const vector<buy>& transactions){
     }
 }
 
+// Update stock in item.csv
+void update_stock_item(const vector<item>& data){
+    ofstream file("D:\\Tugas Kuliah\\Semester 2\\RL105 - Struktur Data dan Algoritma\\DataBarangBaru\\DataBarang\\database\\item.csv");
+    for (const auto& Item : data){
+        file << Item.id_item << "," << Item.item_name << "," << Item.item_price << "," << Item.item_stock << endl;
+    }
+    file.close();
+}
+
 /* Main Program */
 int main(){
     string dateTime, input_id;
     dateTime = current_dateTime();
     vector<buy> transactions;
+    vector<item> data = open_file_item();
 
     do {
         system("cls");
@@ -209,18 +217,19 @@ int main(){
         
         display_transactions(transactions);
 
-        cout << endl << "TOTAL : Rp " << total;
-    } while ((input_id = transaction(transactions)) != "0");
+        cout << endl << "TOTAL     : Rp " << total;
+    } while ((input_id = transaction(transactions, data)) != "0");
 
     do {
-        cout << endl << "BAYAR     : Rp "; cin >> paid;
+        cout << endl << "TUNAI     : Rp "; cin >> paid;
         
         if(paid < total){
             cout << "Maaf uang kurang!";
         }
     } while (paid < total);
     change = paid - total;
-    cout << "KEMBALIAN : Rp " << change;
+    cout << "KEMBALI   : Rp " << change;
 
     print_receipt(transactions);
+    update_stock_item(data);
 }
