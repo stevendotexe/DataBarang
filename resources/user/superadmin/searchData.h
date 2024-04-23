@@ -90,6 +90,7 @@ void editName(vector<vector<string>>& data, int& userIndex){
     getline(cin, newName);
     data[userIndex][1] = newName;
     cout << "Name updated successfully!" << endl;
+    return;
 }
 
 void switchUserType(vector<vector<string>>& data, int& userIndex){
@@ -118,6 +119,7 @@ void changeUsername(vector<vector<string>>& data, int& userIndex){
     getline(cin, newUsername);
     data[userIndex][3] = newUsername;
     cout << "Username updated successfully!" << endl;
+    return;
 }
 
 void changePassword(vector<vector<string>>& data, int& userIndex){
@@ -127,6 +129,7 @@ void changePassword(vector<vector<string>>& data, int& userIndex){
     getline(cin, newPassword);
     data[userIndex][4] = newPassword;
     cout << "Password updated successfully!" << endl;
+    return;
 }
 
 void modifyUser(vector<vector<string>>& data, int& userIndex){
@@ -137,9 +140,10 @@ void modifyUser(vector<vector<string>>& data, int& userIndex){
         cout << "2. Switch user type\n";
         cout << "3. Edit username\n";
         cout << "4. Edit password\n";
-        cout << "5. Complete & Exit";
+        cout << "5. Complete & Exit\n";
+        cout << "Selection: ";
         cin.ignore(); cin >> selection;
-
+        cout << endl;
         switch (selection)
         {
         case 1:
