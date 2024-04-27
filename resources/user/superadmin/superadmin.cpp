@@ -138,11 +138,11 @@ void mainMenu(vector<vector<string>>& userData, int& linecount){
             break; 
         case 2: 
             addData(userData, linecount);
-            saveData(userData, "../../../database/login.csv", false);
+            saveData(userData, "../../../database/login.csv");
             break;
         case 3:
             searchData(userData);
-            break; 
+            break;
         case 4: 
             editUser(userData);
             saveData(userData, "../../../database/login.csv", false);
