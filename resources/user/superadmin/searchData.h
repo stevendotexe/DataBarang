@@ -16,16 +16,15 @@ int searchBy(const string& mode, vector<vector<string>>& data){
                 cout << "Name\t\t" << data[i][1];
                 cout << "\nAccount Type\t" << data[i][2];
                 cout << "\nUsername\t" << data[i][3];
-                cout << "\nPassword\t" << data[i][4];
+                cout << "\nPassword\t" << data[i][4] << endl;
                 sleep(1);
-                return i; // returns the imployee index
+                return i; // returns the employee index
             } 
         }
         cout << "Employee ID " << employeeID << " not found." << endl;
         return 1;
-    }
 
-    if (mode == "staff_name"){
+    } else if (mode == "staff_name"){
         string employeeName;
         cout << "\nEmployee name: "; cin.ignore(); getline(cin, employeeName);
         cout << "Searching....\n";
@@ -44,9 +43,8 @@ int searchBy(const string& mode, vector<vector<string>>& data){
         cout << "Employee \"" << employeeName << "\" not found." << endl;
         sleep(1);
         return 1;
-    }
 
-    if (mode == "username"){
+    } else if (mode == "username"){
         string username;
         cout << "\nUsername: "; cin.ignore(); getline(cin, username);
         cout << "Searching....\n";
@@ -65,35 +63,27 @@ int searchBy(const string& mode, vector<vector<string>>& data){
         cout << "Username \"" << username << "\" not found." << endl;
         sleep(1);
         return 1;
-    }
 
-    if (mode == "displayWHStaff"){
+    } else if (mode == "displayWHStaff"){
         for (int i = 0; i < dataSize; i++){
             if(data[i][2] == "WHStaff"){
                 cout << "ID " << data[i][0] << "\t" <<  data[i][1] << "\t" << data[i][3] << endl;
             }
         }
-    }
-    if (mode == "displayCHStaff"){
+
+    } else if (mode == "displayCHStaff"){
         for (int i = 0; i < dataSize; i++){
             if(data[i][2] == "CHStaff"){
                 cout << "ID " << data[i][0] << "\t" <<  data[i][1] << "\t" << data[i][3] << endl;
             }
         }
+    } else {
+        cout << "Mode does not match any mode available.";
+        return 1;
     }
 }
 
-void editName(vector<vector<string>>& data, int& userIndex){
-    string newName;
-    cout << "Enter new name: ";
-    cin.ignore();
-    getline(cin, newName);
-    data[userIndex][1] = newName;
-    cout << "Name updated successfully!" << endl;
-    return;
-}
-
-void switchUserType(vector<vector<string>>& data, int& userIndex){
+void editUserType(vector<vector<string>>& data, int& userIndex){
     string currentType = data[userIndex][2];
     string newType, confirmation;
     if (currentType == "CHStaff"){
@@ -112,24 +102,65 @@ void switchUserType(vector<vector<string>>& data, int& userIndex){
     }
 }
 
-void changeUsername(vector<vector<string>>& data, int& userIndex){
-    string newUsername;
-    cout << "Enter new username: ";
+void editEmployeeName(vector<vector<string>>& data, int& userIndex){ // done
+    string newName;
+    cout << "New employee name: ";
     cin.ignore();
-    getline(cin, newUsername);
-    data[userIndex][3] = newUsername;
-    cout << "Username updated successfully!" << endl;
+    getline(cin, newName);
+    cout << "Name has been changed.";
+    
+    data[userIndex][1] = newName;
+
     return;
 }
 
-void changePassword(vector<vector<string>>& data, int& userIndex){
+void editUsername(vector<vector<string>>& data, int& userIndex){ // done
+    string newUsername;
+    cout << "New username: ";
+    cin.ignore();
+    getline(cin, newUsername);
+    cout << "Username has been changed.";
+    
+    data[userIndex][3] = newUsername;
+
+    return;
+}
+
+void editPassword(vector<vector<string>>& data, int& userIndex){ // done
     string newPassword;
-    cout << "Enter new password: ";
+    cout << "New username: ";
     cin.ignore();
     getline(cin, newPassword);
+    cout << "Username has been changed.";
+    
     data[userIndex][4] = newPassword;
-    cout << "Password updated successfully!" << endl;
+
     return;
+}
+
+void deleteUser(vector<vector<string>>& data, int& userIndex){
+    string selection;
+    cout << "Would you like to delete user ID" << data[userIndex][0] << "?\n";
+    sleep(0.5);
+    cout << "This action is permanent and cannot be undone.\n";
+    sleep(0.5);
+    cout << "Type CONFIRM to confirm account deletion: "; cin.ignore(); getline(cin, selection);
+    if (selection == "CONFIRM"){
+        cout << "Delete account ID" << data[userIndex][0] << "? \n";
+        sleep(1);
+        cout << "Y/N\t";
+        cin >> selection;
+        if (selection == "y" || selection == "Y"){
+            data.erase(data.begin() + userIndex);
+            cout << "Data deleted.";
+            sleep(1);
+            return;
+        }
+
+    } else {
+        cout << "Account deletion cancelled.";
+        return;
+    }
 }
 
 void modifyUser(vector<vector<string>>& data, int& userIndex){
@@ -140,36 +171,43 @@ void modifyUser(vector<vector<string>>& data, int& userIndex){
         cout << "2. Switch user type\n";
         cout << "3. Edit username\n";
         cout << "4. Edit password\n";
-        cout << "5. Complete & Exit\n";
+        cout << "5. Delete user\n";
+        cout << "6. Complete & Exit\n";
         cout << "Selection: ";
         cin.ignore(); cin >> selection;
         cout << endl;
         switch (selection)
         {
-        case 1:
-            editName(data, userIndex);
-            break;
-        case 2:
-            switchUserType(data, userIndex);
-            break;
-        case 3:
-            changeUsername(data, userIndex);
-            break;
-        case 4:
-            changePassword(data, userIndex);
-            break;
-        case 5:
-            return;
-        default:
-            return;
+            case 1:
+                editEmployeeName(data, userIndex);
+                break;
+            case 2:
+                editUserType(data, userIndex);
+                break;
+            case 3:
+                editUsername(data, userIndex);
+                break;
+            case 4:
+                editPassword(data, userIndex);
+                break;
+            case 5:
+                deleteUser(data, userIndex);
+                break;
+            case 6:
+                break;
+            default:
+                break; // switch case break
         }
-    }
+        break; // while loop break
+    } 
+    return;
 }
 
-void editUser(vector<vector<string>>& data){
-    while (true){
-        int selection;
-        string userIndex;
+int userEditMenu(vector<vector<string>>& data){
+    int userIndex;
+    int selection;
+
+    while(true){
         cout << "\n+==============+\n";
         cout << "| User Editing |\n";
         cout << "+==============+\n";
@@ -179,13 +217,13 @@ void editUser(vector<vector<string>>& data){
         cout << "Operation: ";
         cin.ignore();
         cin >> selection;
-
         switch (selection) {
             case 1:
-                cout << "Input user ID: "; cin >> userIndex;
-                break;
+                cout << "Input user ID: "; 
+                cin >> userIndex;
+                return userIndex;
             case 2:
-            int selection2;
+                int selection2;
                 cout << "1. Search via ID\n";
                 cout << "2. Search via name\n";
                 cout << "3. Search via username\n";
@@ -193,36 +231,46 @@ void editUser(vector<vector<string>>& data){
                 switch (selection2) {
                     case 1:
                         userIndex = searchBy("ID", data);
-                        break;
+                        return userIndex;
                     case 2:
                         userIndex = searchBy("staff_name", data);
-                        break;
+                        return userIndex;
                     case 3:
                         userIndex = searchBy("username", data);
-                        break;
+                        return userIndex;
                     default:
+                        cout << "Invalid input!";
                         break;
                 }
+            case 3:
+                return -1;
             default:
                 cout << "Invalid input!";
                 break;
-            }
-        int intUserIndex = stoi(userIndex);
-        cout << "Employee ID " << userIndex << endl;
-        cout << "Name\t: " << data[intUserIndex][1] << endl;
-        cout << "Type\t: " << data[intUserIndex][2] << endl;
-        cout << "Username\t: " << data[intUserIndex][3] << endl;
-        cout << "Password\t: " << data[intUserIndex][4] << endl;
-
-        string selectionSTR;
-        cout << "Edit this user? (Y/N): "; cin >> selectionSTR;
-        if (selectionSTR == "Y" || selectionSTR == "y"){
-            modifyUser(data, intUserIndex);
-            return;
-        } else {
-            cout << "\nreturning...\n";
-        }
+        } break;
     }
 }
+
+void editUser(vector<vector<string>>& data){
+    int userIndex;
+
+    userIndex = userEditMenu(data);
+
+    cout << "Employee ID " << userIndex << endl;
+    cout << "Name\t\t: " << data[userIndex][1] << endl;
+    cout << "Type\t\t: " << data[userIndex][2] << endl;
+    cout << "Username\t: " << data[userIndex][3] << endl;
+    cout << "Password\t: " << data[userIndex][4] << endl;
+
+    string selectionSTR;
+    cout << "Edit this user? (Y/N): "; cin >> selectionSTR;
+    if (selectionSTR == "Y" || selectionSTR == "y"){
+        modifyUser(data, userIndex);
+        return;
+    } else {
+        cout << "\nreturning...\n";
+        return;
+    }
+    }
 
 #endif // SEARCHDATA_H
