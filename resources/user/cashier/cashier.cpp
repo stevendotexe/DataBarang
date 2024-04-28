@@ -57,7 +57,7 @@ string current_dateTime(){
 
 /* Open file item.csv */
 vector<item> open_file_item(){
-    ifstream file("D:\\Tugas Kuliah\\Semester 2\\RL105 - Struktur Data dan Algoritma\\DataBarangBaru\\DataBarang\\database\\item.csv", ios::in);
+    ifstream file("../../database/item.csv", ios::in);
 
     if (!file.is_open()) {
         cout << "Gagal membuka file CSV" << endl;
@@ -195,7 +195,7 @@ void print_receipt(const vector<buy>& transactions){
 
 // Update stock in item.csv
 void update_stock_item(const vector<item>& data){
-    ofstream file("D:\\Tugas Kuliah\\Semester 2\\RL105 - Struktur Data dan Algoritma\\DataBarangBaru\\DataBarang\\database\\item.csv");
+    ofstream file("../../database/item.csv");
     for (const auto& Item : data){
         file << Item.id_item << "," << Item.item_name << "," << Item.item_price << "," << Item.item_stock << endl;
     }
@@ -203,7 +203,7 @@ void update_stock_item(const vector<item>& data){
 }
 
 /* Main Program */
-int main(){
+void cashier(){
     string dateTime, input_id;
     dateTime = current_dateTime();
     vector<buy> transactions;

@@ -138,17 +138,17 @@ void mainMenu(vector<vector<string>>& userData, int& linecount){
             break; 
         case 2: 
             addData(userData, linecount);
-            saveData(userData, "../../../database/login.csv");
+            saveData(userData, "../../database/login.csv");
             break;
         case 3:
             searchData(userData);
             break;
         case 4: 
             editUser(userData);
-            saveData(userData, "../../../database/login.csv", false);
+            saveData(userData, "../../database/login.csv", false);
             break;
         case 5:
-            saveData(userData, "../../../database/login.csv", true);
+            saveData(userData, "../../database/login.csv", true);
             break;
         default:
             cout << "Invalid selection!";
@@ -156,9 +156,9 @@ void mainMenu(vector<vector<string>>& userData, int& linecount){
     }
 }
 
-int main(){
-    cout << "Loading data...\n";
-    vector<vector<string>> userData = loadData("../../../database/login.csv"); // load data into memory
+int superAdmin(){
+    cout << " Loading data...\n";
+    vector<vector<string>> userData = loadData("../../database/login.csv"); // load data into memory
     int linecount = userData.size(); // get linecount (size of the data)
     cout << "Loading complete!\n";
     sleep(1);

@@ -114,13 +114,14 @@ void simpanData(Barang* head, string filename) {
     }
 }
 
-int main() {
+int bagianBarang() {
     Barang* head = nullptr;
 
 /* Read CSV */
-    ifstream file("C:\\Users\\rabbani computer\\Documents\\Semester 2\\SDA\\Coding\\DataBarang\\database\\item.csv");
+    ifstream file("../../database/item.csv");
     if (!file.is_open()) {
         cout << "File tidak ditemukan" << endl;
+        return 0;
     }
 
     while (!file.eof()) {
@@ -170,7 +171,7 @@ int main() {
                 cout << "Masukkan stock: ";
                 cin >> item_stock;
                 tambahBarang(head, id_item, item_name, item_price, item_stock);
-                simpanData(head, "C:\\Users\\rabbani computer\\Documents\\Semester 2\\SDA\\Coding\\DataBarang\\database\\item.csv");
+                simpanData(head, "../../database/item.csv");
                 break;
             }
             case 2:
@@ -190,7 +191,7 @@ int main() {
                 cout << "Masukkan stock baru: ";
                 cin >> item_stock;
                 ubahBarang(head, id_item, item_name, item_price, item_stock);
-                simpanData(head, "C:\\Users\\rabbani computer\\Documents\\Semester 2\\SDA\\Coding\\DataBarang\\database\\item.csv");
+                simpanData(head, "../../database/item.csv");
                 break;
             }
             case 4: {
@@ -198,12 +199,12 @@ int main() {
                 cout << "Masukkan ID barang yang ingin dihapus: ";
                 cin >> id_item;
                 hapusBarang(head, id_item);
-                simpanData(head, "C:\\Users\\rabbani computer\\Documents\\Semester 2\\SDA\\Coding\\DataBarang\\database\\item.csv");
+                simpanData(head, "../../database/item.csv");
                 break;
             }
             case 5:
                 // Simpan data ke dalam file CSV sebelum keluar dari program
-                simpanData(head, "C:\\Users\\rabbani computer\\Documents\\Semester 2\\SDA\\Coding\\DataBarang\\database\\item.csv");
+                simpanData(head, "../../database/item.csv");
                 break;
             default:
                 cout << "Pilihan tidak valid" << endl;
