@@ -7,7 +7,8 @@
     "iomanip": "cpp",
     "ostream": "cpp",
     "fstream": "cpp",
-    "tuple": "cpp"
+    "tuple": "cpp",
+    "functional": "cpp"
   },
   "C_Cpp.errorSquiggles": "enabled",
   "C_Cpp_Runner.msvcBatchPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Auxiliary/Build/vcvarsall.bat",

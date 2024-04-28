@@ -173,14 +173,14 @@ void print_receipt(const vector<buy>& transactions){
         string dateTime;
         dateTime = current_dateTime();
 
-        printReceipt << "                           INI MINIMARKET" << endl;
-        printReceipt << dateTime << "                                         " << "DANISHA MARC" << endl;
-        printReceipt << "=====================================================================" << endl;
-        printReceipt << "NAMA BARANG \t\t HARGA(Rp) \t JUMLAH \t SUBTOTAL(Rp)" << endl;
-        printReceipt << "=====================================================================" << endl;
+        printReceipt << "                       INI MINIMARKET" << endl;
+        printReceipt << dateTime << "                                 " << "DANISHA MARC" << endl;
+        printReceipt << "=============================================================" << endl;
+        printReceipt << "NAMA BARANG \t\t\t HARGA(Rp) \t JUMLAH \t SUBTOTAL(Rp)" << endl;
+        printReceipt << "=============================================================" << endl;
         for (const auto& transaction : transactions) {
             printReceipt << transaction.item_name.substr(0, 20) << " \t " << transaction.price << " \t\t ";
-            printReceipt << transaction.qnt << " \t\t " << transaction.subtotal << endl;
+            printReceipt << transaction.qnt << " \t\t\t " << transaction.subtotal << endl;
         }
         printReceipt << endl << "TOTAL\t\t: Rp " << total;
         printReceipt << endl << "TUNAI\t\t: Rp " << paid;
