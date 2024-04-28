@@ -57,7 +57,7 @@ string current_dateTime(){
 
 /* Open file item.csv */
 vector<item> open_file_item(){
-    ifstream file("D:\\Tugas Kuliah\\Semester 2\\RL105 - Struktur Data dan Algoritma\\DataBarangBaru\\DataBarang\\database\\item.csv", ios::in);
+    ifstream file("../../../../database/item.csv", ios::in);
 
     if (!file.is_open()) {
         cout << "Gagal membuka file CSV" << endl;
@@ -173,14 +173,14 @@ void print_receipt(const vector<buy>& transactions){
         string dateTime;
         dateTime = current_dateTime();
 
-        printReceipt << "                           INI MINIMARKET" << endl;
-        printReceipt << dateTime << "                                         " << "DANISHA MARC" << endl;
-        printReceipt << "=====================================================================" << endl;
-        printReceipt << "NAMA BARANG \t\t HARGA(Rp) \t JUMLAH \t SUBTOTAL(Rp)" << endl;
-        printReceipt << "=====================================================================" << endl;
+        printReceipt << "                       INI MINIMARKET" << endl;
+        printReceipt << dateTime << "                                 " << "DANISHA MARC" << endl;
+        printReceipt << "=============================================================" << endl;
+        printReceipt << "NAMA BARANG \t\t\t HARGA(Rp) \t JUMLAH \t SUBTOTAL(Rp)" << endl;
+        printReceipt << "=============================================================" << endl;
         for (const auto& transaction : transactions) {
             printReceipt << transaction.item_name.substr(0, 20) << " \t " << transaction.price << " \t\t ";
-            printReceipt << transaction.qnt << " \t\t " << transaction.subtotal << endl;
+            printReceipt << transaction.qnt << " \t\t\t " << transaction.subtotal << endl;
         }
         printReceipt << endl << "TOTAL\t\t: Rp " << total;
         printReceipt << endl << "TUNAI\t\t: Rp " << paid;
@@ -195,7 +195,7 @@ void print_receipt(const vector<buy>& transactions){
 
 // Update stock in item.csv
 void update_stock_item(const vector<item>& data){
-    ofstream file("D:\\Tugas Kuliah\\Semester 2\\RL105 - Struktur Data dan Algoritma\\DataBarangBaru\\DataBarang\\database\\item.csv");
+    ofstream file("../../../../database/item.csv");
     for (const auto& Item : data){
         file << Item.id_item << "," << Item.item_name << "," << Item.item_price << "," << Item.item_stock << endl;
     }
