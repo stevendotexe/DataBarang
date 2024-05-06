@@ -6,7 +6,7 @@ void saveData(vector<vector<string>>& userData, const string fileName, bool exit
     file.open(fileName);
     
     if (!file.is_open()){ // if file isn't opened, an error will be raised
-        cerr << "Cannot open file\n";
+        cerr << "Tidak bisa membuka file.\n";
         exit(1);
     }
     
@@ -21,9 +21,9 @@ void saveData(vector<vector<string>>& userData, const string fileName, bool exit
     }
     file.close();
     if (exitProgram == true){
-        cout << "\nExiting program...";
+        cout << "\nSedang keluar...";
         sleep(1);
-        cout << "\nThank you for using DataBarang.";
+        cout << "\nTerima kasih sudah menggunakan DataBarang.";
         exit(0);
     }
 }
@@ -35,16 +35,16 @@ void addData(vector<vector<string>>& userData, int& linecount){
     while (true){
         correct = false;
         cout << "\n|-=================-|\n";
-        cout << "|+| Add User Data |+|\n";
+        cout << "|+|Manambahkan Data |+|\n";
         cout << "|-=================-|\n";
-        cout << "|1| Input staff name\t: "; 
+        cout << "|1| Masukkan nama staf\t: "; 
         cin.ignore(); getline(cin, staff_name);
-        cout << "|2| Input username\t: "; getline(cin, username);
-        cout << "|3| Input password\t: "; getline(cin, password);
-        cout << "|4| Pick level user\t: "; 
+        cout << "|2| Username\t: "; getline(cin, username);
+        cout << "|3| Password\t: "; getline(cin, password);
+        cout << "|4| Pilih level user\t: "; 
         cout << "\n\ta. WHStaff";
         cout << "\n\tb. CHStaff";
-        cout << "\nSelection: " ; getline(cin, level_user);
+        cout << "\nPilihan: " ; getline(cin, level_user);
         if (level_user == "a" || level_user == "A"){
             level_user = "WHStaff";
             correct = true; 
@@ -52,32 +52,32 @@ void addData(vector<vector<string>>& userData, int& linecount){
             level_user = "CHStaff";
             correct = true;
         } else {
-            cout << "\nInvalid selection";
+            cout << "\nSeleksi Salah!";
             correct = false;
         }
 
         if (correct == true){
             string selection;
 
-            cout << "Confirm addition: \n";
+            cout << "Konfirmasi Penambahan: \n";
             cout << "Account ID\t:" << account_id;
-            cout << "\nStaff name\t:" << staff_name;
+            cout << "\nNama Staf\t:" << staff_name;
             cout << "\nUsername\t:" << username;
             cout << "\nPassword\t:" << password;
             cout << "\nUser level\t:" << level_user;
             
-            cout << "\nAdd new account? (Y/N): ";
+            cout << "\nTambahkan akun? (Y/N): ";
             cin >> selection;
             if (selection == "Y" || selection == "y"){
 
                 vector<string> newUser = {account_id, staff_name, level_user, username, password};
                 userData.push_back(newUser);
-                cout << "[i] New account added.";
+                cout << "[i] Akun baru ditambahkan.";
                 linecount = linecount + 1; // makes sure linecount adds as a new user is added
                 return;
 
             } else {
-                cout << "New account addition cancelled.";
+                cout << "Penambahan akun dibatalkan.";
                 return;
             }
         }
@@ -88,13 +88,13 @@ void addData(vector<vector<string>>& userData, int& linecount){
 void searchData(vector<vector<string>>& userData){
     int selection, employeeIndex;
     cout << "\nDataBarang SearchData\n";
-    cout << "1. Search via Account ID\n";
-    cout << "2. Search via name\n";
-    cout << "3. Search via username\n";
-    cout << "4. Display all WHStaff\n";
-    cout << "5. Display all CHStaff\n";
-    cout << "6. Exit";
-    cout << "Selection: "; cin >> selection;
+    cout << "1. Search lewat Account ID\n";
+    cout << "2. Search lewat nama\n";
+    cout << "3. Search lewat username\n";
+    cout << "4. Print semua WHStaff\n";
+    cout << "5. Print semua CHStaff\n";
+    cout << "6. Keluar";
+    cout << "Pilihan: "; cin >> selection;
     switch(selection){
         case 1:
             searchBy("ID", userData);
@@ -114,7 +114,7 @@ void searchData(vector<vector<string>>& userData){
         case 6:
             return;
         default:
-            cout << "Invalid input!";
+            cout << "Input Salah!";
             break;
     }
 }
@@ -124,12 +124,12 @@ void mainMenu(vector<vector<string>>& userData, int& linecount){
     cout << "\n+-------------------------------------+\n";
     cout << "| DataBarang SUPERADMIN Control Panel |\n";
     cout << "+-------------------------------------+\n";
-    cout << "\nWhat would you like to do? \n";
-    cout << "1.\tPrint user data\n";
-    cout << "2.\tAdd user data\n";
-    cout << "3.\tSearch user\n";
-    cout << "4.\tEdit & remove user data\n";
-    cout << "5.\tSave & Exit\n";
+    cout << "\nApa yang anda ingin lakukan? \n";
+    cout << "1.\tPrint data user\n";
+    cout << "2.\tTambah user data\n";
+    cout << "3.\tCari user\n";
+    cout << "4.\tEdit & hapus user data\n";
+    cout << "5.\tSimpan & keluar\n";
     cout << "Pilihan: "; cin >> selection;
 
     switch(selection){
@@ -157,12 +157,12 @@ void mainMenu(vector<vector<string>>& userData, int& linecount){
 }
 
 int superAdmin(){
-    cout << " Loading data...\n";
+    cout << "Memuat data...\n";
     vector<vector<string>> userData = loadData("../../database/login.csv"); // load data into memory
     int linecount = userData.size(); // get linecount (size of the data)
-    cout << "Loading complete!\n";
+    cout << "Memuat selesai!\n";
     sleep(1);
-    cout << "Accounts registered currently (exclusive of superadmin): " << linecount - 2;
+    cout << "Jumlah akun yang telah terdaftar (selain superAdmin): " << linecount - 2;
 
     while (true){
         mainMenu(userData, linecount);

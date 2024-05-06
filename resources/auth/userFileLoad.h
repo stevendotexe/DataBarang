@@ -16,7 +16,7 @@ vector<vector<string>> loadData(const string& filename) {
     theFile.open(filename); //opens the file
 
     if (!theFile.is_open()) {
-        cerr << "Error while opening file"; // print error message to standard error stream
+        cerr << "Eror membuka file"; // print error message to standard error stream
         exit(1); 
     }
 

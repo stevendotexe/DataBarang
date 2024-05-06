@@ -29,7 +29,7 @@ tuple<bool, string, string> authenticate(vector<vector<string>> data){ // functi
 
 int main(){
     cout << "======================================================================" << endl;
-    cout << "Welcome to DataBarang, please wait a moment while we load some data..." << endl;
+    cout << "|Selamat datang di DataBarang. Mohon tunggu selagi kami memuat data..|" << endl;
     cout << "======================================================================" << endl;
 
     vector<vector<string>> accountData = loadData("../../database/login.csv"); // load account data into vector
@@ -41,9 +41,9 @@ int main(){
     string accountType = get<2>(loginResult);
 
     if (!loginStatus) {
-      cout << "Wrong username or password!";
+      cout << "Password atau username salah!";
     } else {
-      cout << "Login successful! \n";
+      cout << "Login berhasil! \n";
       sleep(1);
     }
 
