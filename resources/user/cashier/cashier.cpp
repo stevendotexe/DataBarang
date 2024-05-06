@@ -163,7 +163,7 @@ void display_transactions(const vector<buy>& transactions) {
 }
 
 /* Print receipt to receipt.txt */
-void print_receipt(const vector<buy>& transactions){
+void print_receipt(const vector<buy>& transactions, string username){
     // Write file
     // If file not found, file will created automatically
     ofstream printReceipt;
@@ -174,7 +174,7 @@ void print_receipt(const vector<buy>& transactions){
         dateTime = current_dateTime();
 
         printReceipt << "                       INI MINIMARKET" << endl;
-        printReceipt << dateTime << "                                 " << "DANISHA MARC" << endl;
+        printReceipt << dateTime << "                                 " << username << endl;
         printReceipt << "=============================================================" << endl;
         printReceipt << "NAMA BARANG \t\t\t HARGA(Rp) \t JUMLAH \t SUBTOTAL(Rp)" << endl;
         printReceipt << "=============================================================" << endl;
@@ -203,7 +203,7 @@ void update_stock_item(const vector<item>& data){
 }
 
 /* Main Program */
-void cashier(){
+void cashier(string username){
     string dateTime, input_id;
     dateTime = current_dateTime();
     vector<buy> transactions;
@@ -212,7 +212,7 @@ void cashier(){
     do {
         system("cls");
         cout << "                           INI MINIMARKET" << endl;
-        cout << dateTime << "                                         " << "DANISHA MARC" << endl;
+        cout << dateTime << "                                         " << username << endl;
         cout << "=====================================================================" << endl;
         
         display_transactions(transactions);
@@ -230,6 +230,6 @@ void cashier(){
     change = paid - total;
     cout << "KEMBALI   : Rp " << change;
 
-    print_receipt(transactions);
+    print_receipt(transactions, username);
     update_stock_item(data);
 }

@@ -81,6 +81,7 @@ int searchBy(const string& mode, vector<vector<string>>& data){
         cout << "Mode does not match any mode available.";
         return 1;
     }
+    return 1;
 }
 
 void editUserType(vector<vector<string>>& data, int& userIndex){
@@ -249,12 +250,13 @@ int userEditMenu(vector<vector<string>>& data){
                 break;
         } break;
     }
+    return 0;
 }
 
 void editUser(vector<vector<string>>& data){
     int userIndex;
 
-    userIndex = userEditMenu(data);
+    userIndex = userEditMenu(data)+1;
 
     cout << "Employee ID " << userIndex << endl;
     cout << "Name\t\t: " << data[userIndex][1] << endl;

@@ -43,10 +43,11 @@ void tampilkanBarang(Barang *head) {
         return;
     } else {
         Barang* temp = head;
-        cout << "ID\tNama\tHarga\tStok" << endl;
-        cout << "===================================" << endl;
+        cout << "=============================================================================" << endl;
+        cout << "ID BARANG \tNAMA BARANG \t\t\tHARGA(Rp) \tSTOK" << endl;
+        cout << "=============================================================================" << endl;
         while (temp != nullptr) {
-        cout << temp->id_item << "\t" << temp->item_name << "\t" << temp->item_price << "\t" << temp->item_stock << endl;
+        cout << temp->id_item << " \t" << temp->item_name << "\t\t" << temp->item_price << "  \t\t" << temp->item_stock << endl;
         temp = temp->next;
         }
     }
@@ -107,7 +108,7 @@ void simpanData(Barang* head, string filename) {
             file << temp->id_item << "," << temp->item_name << "," << temp->item_price << "," << temp->item_stock << endl;
             temp = temp->next;
         }
-        file.close();
+        file.close(); //close file
         cout << "Data berhasil disimpan ke dalam file" << endl;
     } else {
         cout << "Gagal membuka file" << endl;
@@ -121,38 +122,38 @@ int bagianBarang() {
     ifstream file("../../database/item.csv");
     if (!file.is_open()) {
         cout << "File tidak ditemukan" << endl;
-        return 0;
     }
 
-    while (!file.eof()) {
-        string id_item;
-        int item_stock;
-        float item_price;
-        string item_name;
-        file >> id_item;
-        file.ignore();
-        getline(file, item_name, ',');
-        file >> item_price;
-        file.ignore();
-        file >> item_stock;
-        tambahBarang(head, id_item, item_name, item_price, item_stock);
-        
-    }
+    string line;
+        while (getline(file, line)){
+            string id_item;
+            int item_stock;
+            float item_price;
+            string item_name;
+            file >> id_item;
+            file.ignore();
+            getline(file, item_name, ',');
+            file >> item_price;
+            file.ignore();
+            file >> item_stock;
+            tambahBarang(head, id_item, item_name, item_price, item_stock); 
+        }
     file.close();
 
 
+/* main */
     int pilihan;
     do {
-        cout << "====================================" << endl;
-        cout << "PROGRAM BAGIAN GUDANG" << endl;
-        cout << "====================================" << endl;
+        cout << "=============================================================================" << endl;
+        cout << "                         PROGRAM BAGIAN GUDANG" << endl;
+        cout << "=============================================================================" << endl;
         cout << "Menu:" << endl;
         cout << "1. Tambah data barang" << endl;
         cout << "2. Tampilkan data barang" << endl;
         cout << "3. Ubah data barang" << endl;
         cout << "4. Hapus data barang" << endl;
         cout << "5. Selesai" << endl;
-        cout << "====================================" << endl;
+        cout << "=============================================================================" << endl;
         cout << "Pilih menu: ";
         cin >> pilihan;
 
@@ -219,5 +220,5 @@ int bagianBarang() {
         delete temp;
     }
 
-    return 0;
+  return 0;
 }

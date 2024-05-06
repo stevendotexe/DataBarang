@@ -40,13 +40,18 @@ int main(){
     string username = get<1>(loginResult);
     string accountType = get<2>(loginResult);
 
-    cout << "Selamat datang, " << username;
+    if (!loginStatus) {
+      cout << "Wrong username or password!";
+    } else {
+      cout << "Login successful! \n";
+      sleep(1);
+    }
 
     if (accountType == "Superadmin") {
       superAdmin();
     } else if (accountType == "WHStaff") {
       bagianBarang();
     } else if (accountType == "CHStaff") {
-      cashier();
+      cashier(username);
     }
 }
